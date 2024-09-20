@@ -17,8 +17,8 @@ film_router = Router()
 
 
 #Обробник для команди /films та повідомлення із текстом films
-@film_router.message(Command("filmcreate"))
-@film_router.message(F.text.casefold() == "filmcreate")
+@film_router.message(Command("films"))
+@film_router.message(F.text.casefold() == "films")
 async def show_films_command(message: Message, state: FSMContext) -> None:
    films = get_films()
    keyboard = build_films_keyboard(films)
@@ -44,9 +44,8 @@ async def edit_or_answer(message: Message, text: str, keyboard, *args, **kwargs)
        await message.answer(text=text, reply_markup=keyboard, **kwargs)
 
 
-def get_film(id:int=0, f_path:str = "app/data/films.json")->dict:
-   return get_films(f_path)[id]
-
+@film_router.message(Command("filmcreate"))
+@film_router.message(F.text.casefold() == "filmcreate")
 @film_router.message(F.text.casefold() == "create film")
 async def create_film_command(message: Message, state: FSMContext) -> None:
    await state.clear()

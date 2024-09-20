@@ -2,8 +2,11 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
+from aiogram.utils.markdown import hbold
 from ..data import get_films
-from ..keyboards import build_films_keyboard
+from ..keyboards import build_films_keyboard, build_film_details_keyboard
+from ..data import get_films, get_film, save_film
+from ..fsm import FilmCreateForm
 
 
 
@@ -49,15 +52,6 @@ async def create_film_command(message: Message, state: FSMContext) -> None:
    await state.clear()
    await state.set_state(FilmCreateForm.title)
    await edit_or_answer(message, "Яка назва фільму?", ReplyKeyboardRemove())
-
-from ..data import get_films, get_film, save_film
-from ..fsm import FilmCreateForm
-
-
-...
-
-
-
 
 @film_router.message(Command("filmcreate"))
 @film_router.message(F.text.casefold() == "filmcreate")
